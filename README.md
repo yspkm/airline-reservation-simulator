@@ -1,5 +1,8 @@
-빌드 및 실행 방법
+빌드
 
-make
-./air-reservation-sim
+    make
+
+실행
+
+    ./air-reservation-sim
 
