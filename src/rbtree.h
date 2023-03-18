@@ -1,45 +1,42 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <wchar.h>
-#include <time.h>
-#include <math.h>
+#include "graph.h"
 #include "param.h"
 #include "path.h"
 #include "table.h"
-#include "graph.h"
+#include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <wchar.h>
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 typedef int key_t;
-typedef void* data_t;
+typedef void *data_t;
 
-typedef struct __rbnode_
-{
-	char color; // 'R', 'B'
-	key_t key;
-	data_t data;
-	struct __rbnode_ *p;
-	struct __rbnode_ *left;
-	struct __rbnode_ *right;
+typedef struct __rbnode_ {
+  char color; // 'R', 'B'
+  key_t key;
+  data_t data;
+  struct __rbnode_ *p;
+  struct __rbnode_ *left;
+  struct __rbnode_ *right;
 } rbnode_t;
 
-typedef struct __rbtree_
-{
-	rbnode_t *root;
-	rbnode_t *nil;
+typedef struct __rbtree_ {
+  rbnode_t *root;
+  rbnode_t *nil;
 } rbtree_t;
 
-typedef struct __rbedge_
-{
-	struct __rbedge_ *prev;
-	char *str;
+typedef struct __rbedge_ {
+  struct __rbedge_ *prev;
+  char *str;
 } rbedge_t;
 
 // alloc & free
-// rbtree의 초기화 
+// rbtree의 초기화
 void rb_malloc(rbtree_t *T);
 // rbtree의 제거, 모든 키를 삭제하고 할당된 값들을 없앰
 void rb_free(rbtree_t *T);
@@ -49,7 +46,7 @@ void rb_free(rbtree_t *T);
 void init_edge(rbedge_t *_this, rbedge_t *prev, char *str);
 // rbtree 구조를 보기 용이한 형태로 출력함
 int rb_print(rbtree_t *T, rbnode_t *cur, rbedge_t *prev, bool isLeft);
-// edge의 모양을 출력함 하단의 str0, str1, str2, str3 넷 중 하나의 모습 
+// edge의 모양을 출력함 하단의 str0, str1, str2, str3 넷 중 하나의 모습
 void show_edges(rbedge_t *e);
 
 // operations
@@ -76,7 +73,7 @@ void rb_transplant(rbtree_t *T, rbnode_t *src, rbnode_t *dst);
 key_t nearest_neighbor(rbtree_t *T, key_t k);
 
 // insert
-// 키 값 입력, 
+// 키 값 입력,
 // insert rbtree, key값에 대한 노드를 생성하고 아이템 삽입
 bool rb_insert_key(rbtree_t *T, key_t k, data_t item);
 
@@ -90,8 +87,8 @@ void rb_insert_fixup(rbtree_t *T, rbnode_t *z);
 // 실패시 false
 // 성공할 경우 true 반환하고 node 메모리 할당 해제
 bool rb_delete_key(rbtree_t *T, key_t k);
-// rb_delete: rb_delete_key의 서브루틴 
-// 어떤 키 값에 해당되는 노드를 찾고 그 노드를 반환합니다.  
+// rb_delete: rb_delete_key의 서브루틴
+// 어떤 키 값에 해당되는 노드를 찾고 그 노드를 반환합니다.
 rbnode_t *rb_delete(rbtree_t *T, rbnode_t *z);
 // rb_delete의 서브루틴
 // rb_delete 이후 rbtree 구조를 유지함

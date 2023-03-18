@@ -1,48 +1,44 @@
 #pragma once
 
+#include <ctype.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
 #include <string.h>
-#include <ctype.h>
+#include <time.h>
 
-#include "table.h"
-#include "path.h"
 #include "param.h"
+#include "path.h"
+#include "table.h"
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 // 각 노드의 좌표를 의미하며, 랜덤 생성됩니다.
-typedef struct
-{
-    double x;
-    double y;
+typedef struct {
+  double x;
+  double y;
 } point_t;
 
 // 인접리스트 형태 그래프의 각 노드에 해당됩니다.
-typedef struct __gnode_
-{
-    struct __gnode_ *next;
-    int dst;  // dst
-    double w; // distance in km
+typedef struct __gnode_ {
+  struct __gnode_ *next;
+  int dst;  // dst
+  double w; // distance in km
 } gnode_t;
 
 // 헤더 노드는 위치데이터와
 // 항공스케쥴 테이블이 포함됩니다.
-typedef struct
-{
-    int src; // src
-    gnode_t head;
-    point_t p;
-    table_t t; // monthly flight table
+typedef struct {
+  int src; // src
+  gnode_t head;
+  point_t p;
+  table_t t; // monthly flight table
 } ghead_t;
 
 // 각 헤더 노드의 배열을 그래프구조체로 정의하여 추상화했습니다.
-typedef struct
-{
-    ghead_t v[MAXNODE];
+typedef struct {
+  ghead_t v[MAXNODE];
 } graph_t;
 
 // 그래프 초기화를 위한 메소드 입니다.
@@ -59,7 +55,8 @@ void init_flight_system(graph_t *g, bool adj[][MAXNODE], bool isrand);
 // 이 부분을 해결하기가 쉽지 않기 때문입니다. simplified 버전의 경우
 // dijkstra나 bfs를 사용할 수 있을 것입니다.
 int find_path(graph_t *g, city_t src, city_t dst, int day, path_t *p);
-// time slot table에서의 dfs를 하기 전에 간략하게 연결 자체의 여부를 빠르게 판단합니다.
+// time slot table에서의 dfs를 하기 전에 간략하게 연결 자체의 여부를 빠르게
+// 판단합니다.
 bool is_connected(graph_t *g, city_t src, city_t dst);
 // is_connected의 서브루틴입니다.
 bool __is_connected_(graph_t *g, city_t cur, city_t dst);
@@ -70,9 +67,9 @@ void print_path(path_t *p);
 // actual time은 5분 단위 슬롯이 아닌 실제 분단위 정보를 의미합니다.
 // 따라서 이 값은 5를 곱할 필요 없이 사용될 수 있습니다.
 void print_acutual_time(double acutual_time);
-// dfs: 특정 날짜의 0시 0분에 특정 도시에서 출발하여 특정 dst 도시로의 경로를 얻습니다
-// 총 걸린시간과 경로별 시간데이터가 모두 저장됩니다.
-// path_t 구조체에 모든 정보가 담기게 되고, 이를 재가공하여 사용합니다.
+// dfs: 특정 날짜의 0시 0분에 특정 도시에서 출발하여 특정 dst 도시로의 경로를
+// 얻습니다 총 걸린시간과 경로별 시간데이터가 모두 저장됩니다. path_t 구조체에
+// 모든 정보가 담기게 되고, 이를 재가공하여 사용합니다.
 int dfs(graph_t *g, city_t src, city_t dst, tunit_t curtime, path_t *path);
 // dfs의 서브루틴입니다.
 int do_dfs(graph_t *g, city_t, city_t, path_t *path);
